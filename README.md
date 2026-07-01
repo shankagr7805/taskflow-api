@@ -316,9 +316,9 @@ See `SCALABILITY.md` for details.
 
 B.Tech CSE, IIIT Bhopal
 
-GitHub: https://github.com/<your-username>
+GitHub: https://github.com/shankagr7805
 
-LinkedIn: https://linkedin.com/in/<your-profile>
+LinkedIn: https://linkedin.com/in/shankar-agrawal
 
 ---
 
