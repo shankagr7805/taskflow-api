@@ -1,0 +1,58 @@
+version: "3.8"
+
+services:
+  api:
+    build: ./backend
+    ports:
+      - "5001:5001"
+    env_file:
+      - ./backend/.env
+    environment:
+      # These override backend/.env inside the container so the api always
+      # finds the containerized mysql + redis over the internal Docker
+      # network, regardless of what backend/.env is set up for (which is
+      # meant for running `npm start` locally, outside Docker).
+      - DB_DIALECT=mysql
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_NAME=taskflow
+      - DB_USER=root
+      - DB_PASSWORD=taskflow_dev_pass
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: taskflow_dev_pass
+      MYSQL_DATABASE: taskflow
+    ports:
+      # Host 3310 -> container 3306. Your other projects already use
+      # 3307/3308/3309 on the host, so 3310 stays free. This host port only
+      # matters if you want to point a local client (Workbench/DBeaver/
+      # mysql CLI) at it directly — the api container always reaches this
+      # over the internal Docker network as mysql:3306 regardless.
+      - "3310:3306"
+    volumes:
+      - taskflow_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-ptaskflow_dev_pass"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      # Host 6383 -> container 6379. Your other projects already use
+      # 6379/6381/6382 on the host, so 6383 stays free. Same story as
+      # above: internal traffic uses redis:6379 regardless of this mapping.
+      - "6383:6379"
+
+volumes:
+  taskflow_mysql_data:

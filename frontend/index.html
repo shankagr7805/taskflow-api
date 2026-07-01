@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TaskFlow — API test console</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar__brand">
+      <span class="topbar__mark">&gt;_</span>
+      <span>TaskFlow</span>
+    </div>
+    <div id="userBar" class="topbar__user hidden">
+      <span id="userEmail"></span>
+      <span id="userRole" class="badge"></span>
+      <button id="logoutBtn" class="btn btn--ghost">Log out</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Auth screen -->
+    <section id="authScreen" class="auth">
+      <div class="auth__card">
+        <div class="tabs">
+          <button class="tab tab--active" data-tab="login">Log in</button>
+          <button class="tab" data-tab="register">Register</button>
+        </div>
+
+        <form id="loginForm" class="form">
+          <label>Email
+            <input type="email" name="email" required placeholder="you@example.com" />
+          </label>
+          <label>Password
+            <input type="password" name="password" required placeholder="••••••••" />
+          </label>
+          <button type="submit" class="btn btn--primary">Log in</button>
+          <p class="hint">Demo accounts (after running <code>npm run seed</code>):<br />
+            admin@taskflow.dev / admin1234 &nbsp;·&nbsp; user@taskflow.dev / user1234</p>
+        </form>
+
+        <form id="registerForm" class="form hidden">
+          <label>Name
+            <input type="text" name="name" required placeholder="Shankar Kumar" />
+          </label>
+          <label>Email
+            <input type="email" name="email" required placeholder="you@example.com" />
+          </label>
+          <label>Password
+            <input type="password" name="password" required minlength="6" placeholder="At least 6 characters" />
+          </label>
+          <label>Admin code <span class="optional">(optional)</span>
+            <input type="text" name="adminCode" placeholder="leave blank for a normal account" />
+          </label>
+          <button type="submit" class="btn btn--primary">Create account</button>
+        </form>
+
+        <p id="authMessage" class="message hidden"></p>
+      </div>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="dashboard" class="dashboard hidden">
+
+      <div class="panel">
+        <h2>New task</h2>
+        <form id="taskForm" class="form form--inline">
+          <input type="text" name="title" placeholder="Task title" required maxlength="120" />
+          <input type="text" name="description" placeholder="Description (optional)" maxlength="2000" />
+          <select name="priority">
+            <option value="low">low</option>
+            <option value="medium" selected>medium</option>
+            <option value="high">high</option>
+          </select>
+          <button type="submit" class="btn btn--primary">Add task</button>
+        </form>
+      </div>
+
+      <div class="panel">
+        <div class="panel__header">
+          <h2 id="taskListTitle">Tasks</h2>
+          <div class="filters">
+            <select id="statusFilter">
+              <option value="">all statuses</option>
+              <option value="pending">pending</option>
+              <option value="in_progress">in_progress</option>
+              <option value="done">done</option>
+            </select>
+            <button id="refreshBtn" class="btn btn--ghost">Refresh</button>
+          </div>
+        </div>
+
+        <p id="cacheIndicator" class="cache-indicator hidden">⚡ served from Redis cache</p>
+        <p id="taskMessage" class="message hidden"></p>
+        <div id="taskList" class="task-list"></div>
+      </div>
+
+      <div id="adminPanel" class="panel hidden">
+        <h2>All users <span class="badge">admin only</span></h2>
+        <div id="userList" class="task-list"></div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    TaskFlow API test console — talks to the API at <code id="apiBaseLabel"></code>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
