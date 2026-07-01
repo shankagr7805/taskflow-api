@@ -285,12 +285,28 @@ See `SCALABILITY.md` for details.
 
 # Screenshots
 
-```text
-screenshots/
-├── login.png
-├── dashboard.png
-└── admin-dashboard.png
-```
+## Login
+
+![Login](screenshots/login.png)
+
+---
+
+## Register
+
+![Register](screenshots/register.png)
+
+---
+
+## User Dashboard
+
+![User Dashboard](screenshots/user-dashboard.png)
+
+---
+
+## Admin Dashboard
+
+![Admin Dashboard](screenshots/admin-dashboard.png)
+
 
 ---
 
